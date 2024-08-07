@@ -287,6 +287,8 @@ def clearDict(dict):
 def parityPlot(dataML, gcvGT, mode, error, xLabel, yLabel, title, figureNum):
     printGraphNum(figureNum)
 
+    errList = None
+
     #read .csv file and run the code
     df = pd.read_csv(dataML)
 
@@ -333,7 +335,11 @@ def parityPlot(dataML, gcvGT, mode, error, xLabel, yLabel, title, figureNum):
         print(features)
         df = features
     elif mode == 'Avg':
-        pass
+        errList = []
+        for i in range(0, len(mListML)):
+            newDf = df[df['ImageName'] == 'Image'+str(i)]
+            stdDev = np.std(newDf['ML'])
+            errList.append(stdDev)
     elif mode == 'Count':
         pass
 
@@ -356,7 +362,7 @@ def parityPlot(dataML, gcvGT, mode, error, xLabel, yLabel, title, figureNum):
     sb.pairplot(x_vars='GT', y_vars='ML', kind='scatter', hue='Class', markers=m, data=df)
     sb.lineplot(x='x', y='y', linestyle='dashed', color='grey', data=line) 
     plt.axis([Gmin, Gmax, Gmin, Gmax]) 
-    plt.errorbar(x=df['GT'], y=df['ML'], yerr=error, fmt='none', capsize=7, elinewidth=2)
+    plt.errorbar(x=df['GT'], y=df['ML'], yerr=errList, fmt='none', capsize=7, elinewidth=2)
     setLabels(xLabel, yLabel, title)
     #for some reason, if this line of code is at the end, it removes the extra blank graph window. Watch
     #out for this line of code if a blank window is generated
