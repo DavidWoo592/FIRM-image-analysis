@@ -20,7 +20,7 @@ def feature_extraction(img):
     #reshape img pixels into one column
     img2 = img.reshape(-1)
     #add column into empty dataframe, label it 'original image'
-    df['original image'] = img2
+    df['Pixel_Value'] = img2
 
  
     #FIRST SET - GABOR FEATURES 
@@ -96,8 +96,8 @@ def feature_extraction(img):
     del gaussian_img, gaussian_img1
     gc.collect()
     
-    #GAUSSIAN with sigma=7
-    gaussian_img2 = nd.gaussian_filter(img, sigma=7)
+    #GAUSSIAN with sigma=7 *Change to sigma=1 suggested by Nick
+    gaussian_img2 = nd.gaussian_filter(img, sigma=1)
     gaussian_img3 = gaussian_img2.reshape(-1)
     df['Gaussian s7'] = gaussian_img3
     del gaussian_img2, gaussian_img3
@@ -128,7 +128,7 @@ print('loading cervix fibril detection model')
 load_model = joblib.load(open(filename, 'rb'))
 
 #declare folder where images are (the images i want to analyze)
-path = 'testing_images/'
+path = 'C:\\Users\\Dwoo413\\FIRM-image-analysis\\Testing Dataset for FIRM\\Non-Pregnant\\Raw\\'
 
 #create a list of all the image file names for the headers of the csv file
 propList = []
@@ -165,7 +165,7 @@ for file in os.listdir(path):
     #reshape since result is one column
     segmented2 = result.reshape((img.shape))
     print('saving segmented')
-    plt.imsave('segmented/seg.jpg'+ str(file), segmented2, cmap='gray')
+    plt.imsave('C:\\Users\\Dwoo413\\FIRM-image-analysis\\Testing Dataset for FIRM\\Non-Pregnant\\Segmented\\'+ str(file), segmented2, cmap='gray')
     #up to this point it will segment out the defects, but 
     #will be a bunch of dots since it iterates pixel by pixel
 
@@ -175,7 +175,7 @@ for file in os.listdir(path):
     print('solidifying image')
     from PIL import Image
     
-    MyImg = Image.open('segmented/seg.jpg'+ str(file))
+    MyImg = Image.open('C:\\Users\\Dwoo413\\FIRM-image-analysis\\Testing Dataset for FIRM\\Non-Pregnant\\Segmented\\'+ str(file))
     pixels = MyImg.load()
     
     #since the images are not exactly white, black, or gray, here it changes 
@@ -285,7 +285,7 @@ for file in os.listdir(path):
     # we can see what the algorithm thinks is a distinct defect.
     # the reason for this is that some defects may overlap slightly, 
     # a watershed algorithm can be introduced here to separate those instances
-    plt.imsave('testing_results/final.jpg' + str(file), img2)
+    plt.imsave('C:\\Users\\Dwoo413\\FIRM-image-analysis\\Testing Dataset for FIRM\\Non-Pregnant\\Export\\' + str(file), img2)
     
     ####################################################
     # use regionprops to extract each area and export to csv file (excel)

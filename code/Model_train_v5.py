@@ -17,7 +17,7 @@ import os
 # empty dataset for our image features
 image_dataset = pd.DataFrame() 
 # insert path to the training images
-img_path = 'training_images/'
+img_path = 'C:\\Users\\Dwoo413\\FIRM-image-analysis\\Training Dataset for FIRM\\training_images\\'
 
 
 for image in os.listdir(img_path):
@@ -118,8 +118,8 @@ for image in os.listdir(img_path):
     del gaussian_img, gaussian_img1
     gc.collect()
     
-    #GAUSSIAN with sigma=7
-    gaussian_img2 = nd.gaussian_filter(img, sigma=7)
+    #GAUSSIAN with sigma=7 *Change to sigma=1 suggested by Nick
+    gaussian_img2 = nd.gaussian_filter(img, sigma=1)
     gaussian_img3 = gaussian_img2.reshape(-1)
     df['Gaussian s7'] = gaussian_img3
     del gaussian_img2, gaussian_img3
@@ -134,7 +134,9 @@ for image in os.listdir(img_path):
     
     #update dataframe with features of each image 
     print('done extracting, appending data to dataset')
-    image_dataset = image_dataset.append(df)
+
+    #Updated to use pd.concat() instead of dataframe.append() due to new python update
+    image_dataset = image_dataset._append(df)
     del df
     gc.collect()
 ##########################################################################
@@ -145,7 +147,7 @@ for image in os.listdir(img_path):
 mask_dataset = pd.DataFrame() #create empty datafame to capture mask info
 
 # insert path to the image masks 
-mask_path = 'training_images_masks/'
+mask_path = 'C:\\Users\\Dwoo413\\FIRM-image-analysis\\Training Dataset for FIRM\\training_images_masks\\'
 #import os
 for mask in os.listdir(mask_path): 
     print('reading mask ' + str(mask))
@@ -169,7 +171,9 @@ for mask in os.listdir(mask_path):
     df2['Mask_Name'] = mask
 
     print('appending mask data to dataset')
-    mask_dataset = mask_dataset.append(df2) #update mask dataframe with all info from each mask 
+
+    #Updated to use pd.concat() instead of dataframe.append() due to new python update
+    mask_dataset = mask_dataset._append(df2) #update mask dataframe with all info from each mask 
     
     del df2 #delete and call gc to remove from RAM
     gc.collect()
@@ -215,7 +219,7 @@ print('executing random forest classifier')
 # n_estimators is the number of decision trees, the more you have, the more 
 # complex the classification gets and in general the more accurate results. 
 # however, it does take up a lot of memory. 10 is on the lower side
-model = RandomForestClassifier(n_estimators = 8, random_state = 42)
+model = RandomForestClassifier(n_estimators = 8, random_state = 42, max_depth = 25)
 print('fitting model with training data')
 # fit model on training data 
 model.fit(X_train, y_train)
