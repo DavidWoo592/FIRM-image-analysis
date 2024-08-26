@@ -119,7 +119,6 @@ def strToFloatList(l):
 
 ############################################
 # EXECUTE IMAGEJ COMMANDS TO GENERATE .CSVs
-# Currently Unavailable
 ############################################
 
 import imagej 
@@ -128,7 +127,7 @@ from scyjava import jimport #use Java object/resources in Python
 scyjava.config.add_option('-Xmx6g')
 
 printHeader()
-print('PCG_extract_gen v1.0: Extract features and automatically generate graphs')
+print('PCG_extract_gen v2.0: Extract features and automatically generate graphs')
 printHeader()
 
 #sets imagej to a reproducible version
